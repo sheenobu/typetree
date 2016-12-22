@@ -8,7 +8,7 @@ import (
 )
 
 type fieldSetTest struct {
-	Subject     field
+	Subject     *field
 	Value       interface{}
 	Destination interface{}
 
@@ -30,6 +30,8 @@ func (g *fieldSetTest) Test(i interface{}, err error) bool {
 	success = success && g.ExpectedX.Field2 == ex.Field2
 	success = success && reflect.DeepEqual(g.ExpectedX.Field3, ex.Field3)
 	success = success && reflect.DeepEqual(g.ExpectedX.Field4, ex.Field4)
+	success = success && reflect.DeepEqual(g.ExpectedX.Field5, ex.Field5)
+	success = success && reflect.DeepEqual(g.ExpectedX.Field6, ex.Field6)
 
 	return success
 }
@@ -40,17 +42,24 @@ type x struct {
 	Field3 *y
 	Field4 y
 	Field5 []string
+	Field6 interface{}
 }
 
 type y struct {
 	X int32
 }
 
-var field1 = field{Index: 0, Identifier: identifier{Name: "Field1"}, Type: reflect.TypeOf("")}
-var field2 = field{Index: 1, Identifier: identifier{Name: "Field2"}, Type: reflect.TypeOf(0)}
-var field3 = field{Index: 2, Identifier: identifier{Name: "Field3"}, Type: reflect.TypeOf(&y{})}
-var field4 = field{Index: 3, Identifier: identifier{Name: "Field4"}, Type: reflect.TypeOf(y{})}
-var field5 = field{Index: 4, Identifier: identifier{Name: "Field5"}, Type: reflect.TypeOf([]string{})}
+func mustBuildField(s string, idx int, st reflect.StructField) *field {
+	f, _ := buildField("", 5, &st)
+	return f
+}
+
+var field1 = &field{Index: 0, Identifier: identifier{Name: "Field1"}, Type: reflect.TypeOf("")}
+var field2 = &field{Index: 1, Identifier: identifier{Name: "Field2"}, Type: reflect.TypeOf(0)}
+var field3 = &field{Index: 2, Identifier: identifier{Name: "Field3"}, Type: reflect.TypeOf(&y{})}
+var field4 = &field{Index: 3, Identifier: identifier{Name: "Field4"}, Type: reflect.TypeOf(y{})}
+var field5 = &field{Index: 4, Identifier: identifier{Name: "Field5"}, Type: reflect.TypeOf([]string{})}
+var field6 = mustBuildField("", 5, reflect.TypeOf(x{}).Field(5))
 
 var fieldSetTests = []fieldSetTest{
 	{Subject: field1, Value: "hello", Destination: &x{}, ExpectedX: x{Field1: "hello"}, ExpectedError: nil},
@@ -66,6 +75,9 @@ var fieldSetTests = []fieldSetTest{
 	{Subject: field4, Value: y{X: 12}, Destination: &x{}, ExpectedX: x{Field4: y{X: 12}}, ExpectedError: nil},
 
 	{Subject: field5, Value: []string{"hello"}, Destination: &x{}, ExpectedX: x{Field5: []string{"hello"}}, ExpectedError: nil},
+
+	{Subject: field6, Value: "X", Destination: &x{}, ExpectedX: x{Field6: "X"}, ExpectedError: nil},
+	{Subject: field6, Value: []string{"Y"}, Destination: &x{}, ExpectedX: x{Field6: []string{"Y"}}, ExpectedError: nil},
 }
 
 func TestFieldSet(t *testing.T) {

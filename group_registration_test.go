@@ -9,6 +9,10 @@ import (
 type testType struct {
 }
 
+type testTypeWithInterface struct {
+	I interface{}
+}
+
 var groupRegistrationTests = []groupRegistrationTest{
 	{Name: "", Input: nil, Expected: errors.New("Type argument is nil")},
 	{Name: "name1", Input: nil, Expected: errors.New("Type argument is nil")},
@@ -17,6 +21,8 @@ var groupRegistrationTests = []groupRegistrationTest{
 	{Name: "name1", Input: testType{}, Expected: nil},
 
 	{Name: "name1", Input: 12, Expected: errors.New("Type 'int' is not a struct")},
+
+	{Name: "name2", Input: testTypeWithInterface{}, Expected: nil},
 }
 
 type groupRegistrationTest struct {

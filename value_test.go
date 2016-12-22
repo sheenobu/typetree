@@ -1,7 +1,6 @@
 package typetree
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -14,7 +13,7 @@ func TestValueSimple(t *testing.T) {
 	v.t = reflect.TypeOf(str)
 
 	if str != v.Interface().(string) {
-		fmt.Printf("Failed the simplest test")
+		t.Error("Failed the simplest test")
 	}
 
 }

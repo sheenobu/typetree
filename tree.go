@@ -74,6 +74,10 @@ func (f *field) GetValue(dest interface{}) (interface{}, error) {
 }
 
 func assignableToCheck(left reflect.Type, rightValue reflect.Value) (assignable bool, ptrLeft bool, ptrRight bool) {
+	if left.Kind() == reflect.Interface {
+		assignable = true
+		return
+	}
 
 	assignable = left.AssignableTo(rightValue.Type())
 	if assignable {

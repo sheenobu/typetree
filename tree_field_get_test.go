@@ -7,7 +7,7 @@ import (
 )
 
 type fieldGetTest struct {
-	Subject field
+	Subject *field
 	Source  interface{}
 
 	ExpectedOut   interface{}
