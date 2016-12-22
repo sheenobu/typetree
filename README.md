@@ -73,8 +73,8 @@ it points to the same region of memory:
 myType.SubType.Count == 12
 ```
 
-We can also append to arrays. The boolean return value will
-be false if appending failed due to a missing or wrongly typed field:
+We can also append to arrays. The error will indicate if
+appending failed due to a missing or wrongly typed field:
 
 ```go
 // Append to an array
