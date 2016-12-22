@@ -17,8 +17,10 @@ type Value interface {
 }
 
 type valueS struct {
-	v reflect.Value
-	t reflect.Type
+	parent interface{}
+	v      reflect.Value
+	t      reflect.Type
+	field  *field
 }
 
 func (v *valueS) Interface() interface{} {
@@ -32,6 +34,10 @@ func (v *valueS) Append(value interface{}) error {
 	}
 
 	v.v = reflect.Append(v.v, reflect.ValueOf(value))
+
+	if v.parent != nil && v.field != nil {
+		return v.field.SetValue(v.parent, v.v.Interface())
+	}
 
 	return nil
 }

@@ -113,8 +113,10 @@ func (ti *treeInstance) Get(key Key) (val Value, err error) {
 				}
 
 				val = &valueS{
-					t: child.Type,
-					v: reflect.ValueOf(i),
+					t:      child.Type,
+					v:      reflect.ValueOf(i),
+					parent: curPtr.Interface(),
+					field:  child,
 				}
 				return
 			}

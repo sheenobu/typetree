@@ -39,6 +39,7 @@ type x struct {
 	Field2 int
 	Field3 *y
 	Field4 y
+	Field5 []string
 }
 
 type y struct {
@@ -49,6 +50,7 @@ var field1 = field{Index: 0, Identifier: identifier{Name: "Field1"}, Type: refle
 var field2 = field{Index: 1, Identifier: identifier{Name: "Field2"}, Type: reflect.TypeOf(0)}
 var field3 = field{Index: 2, Identifier: identifier{Name: "Field3"}, Type: reflect.TypeOf(&y{})}
 var field4 = field{Index: 3, Identifier: identifier{Name: "Field4"}, Type: reflect.TypeOf(y{})}
+var field5 = field{Index: 4, Identifier: identifier{Name: "Field5"}, Type: reflect.TypeOf([]string{})}
 
 var fieldSetTests = []fieldSetTest{
 	{Subject: field1, Value: "hello", Destination: &x{}, ExpectedX: x{Field1: "hello"}, ExpectedError: nil},
@@ -62,6 +64,8 @@ var fieldSetTests = []fieldSetTest{
 
 	{Subject: field4, Value: &y{X: 12}, Destination: &x{}, ExpectedX: x{Field4: y{X: 12}}, ExpectedError: nil},
 	{Subject: field4, Value: y{X: 12}, Destination: &x{}, ExpectedX: x{Field4: y{X: 12}}, ExpectedError: nil},
+
+	{Subject: field5, Value: []string{"hello"}, Destination: &x{}, ExpectedX: x{Field5: []string{"hello"}}, ExpectedError: nil},
 }
 
 func TestFieldSet(t *testing.T) {

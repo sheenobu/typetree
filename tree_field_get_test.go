@@ -39,6 +39,8 @@ var fieldGetTests = []fieldGetTest{
 
 	{Subject: field4, Source: &x{Field4: y{X: 14}}, ExpectedOut: y{X: 14}, ExpectedError: nil},
 	{Subject: field4, Source: x{Field4: y{X: 14}}, ExpectedOut: y{X: 14}, ExpectedError: nil},
+
+	{Subject: field5, Source: &x{Field5: []string{"hello"}}, ExpectedOut: []string{"hello"}, ExpectedError: nil},
 }
 
 func TestFieldGet(t *testing.T) {
